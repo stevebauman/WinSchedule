@@ -1,0 +1,42 @@
+{
+    "name": "stevebauman/winschedule",
+    "type": "project",
+    "description": "Actual PHP task scheduling for Windows.",
+    "keywords": [
+        "scheduling",
+        "windows",
+        "task"
+    ],
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/stevebauman/WinSchedule/issues",
+        "source": "https://github.com/stevebauman/WinSchedule"
+    },
+    "authors": [
+        {
+            "name": "Steve Bauman",
+            "email": "steven_bauman@outlook.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.6.*",
+        "mockery/mockery": "0.9.*"
+    },
+    "archive": {
+        "exclude": ["/examples", "/tests"]
+    },
+    "autoload": {
+        "psr-4": {
+            "Stevebauman\\WinSchedule\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Stevebauman\\WinSchedule\\Tests\\": "tests/"
+        }
+    }
+}
