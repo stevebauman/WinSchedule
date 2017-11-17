@@ -72,6 +72,30 @@ abstract class Trigger
     }
 
     /**
+     * Sets the identifier of the trigger.
+     *
+     * @param string $id
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->object->Id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Retrieves the identifier of the trigger.
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->object->Id;
+    }
+
+    /**
      * Sets the boolean value that indicates whether the trigger is enabled.
      *
      * @param bool $bool
