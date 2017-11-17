@@ -1,6 +1,6 @@
 <?php
 
-namespace Stevebauman\Schedule;
+namespace Stevebauman\WinSchedule;
 
 class Scheduler
 {
