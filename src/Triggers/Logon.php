@@ -2,13 +2,13 @@
 
 namespace Stevebauman\WinSchedule\Triggers;
 
-class Time extends Trigger
+class Logon extends Trigger
 {
     /**
      * {@inheritdoc}
      */
     public function type()
     {
-        return 1;
+        return 9;
     }
 }

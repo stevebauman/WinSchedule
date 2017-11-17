@@ -1,6 +1,6 @@
 <?php
 
-namespace Stevebauman\Schedule\Triggers;
+namespace Stevebauman\WinSchedule\Triggers;
 
 use Carbon\Carbon;
 
@@ -26,7 +26,7 @@ abstract class Trigger
     /**
      * Enable the trigger.
      *
-     * @return Trigger
+     * @return $this
      */
     public function enabled()
     {
@@ -36,21 +36,39 @@ abstract class Trigger
     /**
      * Disable the trigger.
      *
-     * @return Trigger
+     * @return $this
      */
     public function disabled()
     {
         return $this->setEnabled(false);
     }
 
-    public function startAt()
+    /**
+     * Sets the start boundary date / time.
+     *
+     * @param string $date
+     *
+     * @return $this
+     */
+    public function startAt($date)
     {
-        //
+        $this->object->StartBoundary = (new Carbon($date))->toAtomString();
+
+        return $this;
     }
 
-    public function endAt()
+    /**
+     * Sets the end boundary date / time.
+     *
+     * @param string $date
+     *
+     * @return $this
+     */
+    public function endAt($date)
     {
-        //
+        $this->object->EndBoundary = (new Carbon($date))->toAtomString();
+
+        return $this;
     }
 
     /**
@@ -67,5 +85,5 @@ abstract class Trigger
         return $this;
     }
 
-    abstract public function getType();
+    abstract public function type();
 }
