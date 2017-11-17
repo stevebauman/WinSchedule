@@ -9,16 +9,16 @@ class Settings
      *
      * @var \VARIANT
      */
-    protected $object;
+    protected $resource;
 
     /**
      * Settings constructor.
      *
-     * @param \Variant $object
+     * @param \VARIANT $resource
      */
-    public function __construct($object)
+    public function __construct($resource)
     {
-        $this->object = $object;
+        $this->resource = $resource;
 
         $this->setDefaults();
     }
@@ -83,7 +83,7 @@ class Settings
      */
     public function setEnabled($enabled = true)
     {
-        $this->object->enabled = $enabled;
+        $this->resource->enabled = $enabled;
 
         return $this;
     }
@@ -97,7 +97,7 @@ class Settings
      */
     public function setHidden($hidden = false)
     {
-        $this->object->hidden = $hidden;
+        $this->resource->hidden = $hidden;
 
         return $this;
     }
@@ -111,7 +111,7 @@ class Settings
      */
     public function setStartWhenAvailable($enabled = true)
     {
-        $this->object->startWhenAvailable = $enabled;
+        $this->resource->startWhenAvailable = $enabled;
 
         return $this;
     }

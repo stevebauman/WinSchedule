@@ -6,6 +6,18 @@ use Carbon\Carbon;
 
 abstract class Trigger
 {
+    const TYPE_EVENT = 0;
+    const TYPE_TIME = 1;
+    const TYPE_DAILY = 2;
+    const TYPE_WEEKLY = 3;
+    const TYPE_MONTHLY = 4;
+    const TYPE_MONTHLY_DOW = 5;
+    const TYPE_IDLE = 6;
+    const TYPE_REGISTRATION = 7;
+    const TYPE_BOOT = 8;
+    const TYPE_LOGON = 9;
+    const TYPE_SESSION_STATE_CHANGE = 11;
+
     /**
      * The underlying trigger object.
      *
@@ -108,6 +120,4 @@ abstract class Trigger
 
         return $this;
     }
-
-    abstract public function type();
 }

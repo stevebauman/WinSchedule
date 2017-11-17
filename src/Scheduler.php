@@ -2,6 +2,9 @@
 
 namespace Stevebauman\WinSchedule;
 
+use COM;
+use VARIANT;
+
 class Scheduler
 {
     /**
@@ -14,7 +17,7 @@ class Scheduler
     /**
      * The underlying schedule service COM object.
      *
-     * @var \Variant
+     * @var VARIANT
      */
     protected $service;
 
@@ -37,7 +40,7 @@ class Scheduler
      *
      * @return Task
      */
-    public function task()
+    public function newTask()
     {
         return new Task($this->service->newTask(0));
     }
@@ -45,12 +48,15 @@ class Scheduler
     /**
      * Saves the given task.
      *
+     * The default flag is set for create
+     *
+     * @param int  $flags
      * @param Task $task
      */
-    public function saveTask(Task $task)
+    public function saveTask(Task $task, $flags = Scheduler::TASK_CREATE_OR_UPDATE)
     {
         $folder = $this->service->getFolder($task->getFolderPath());
 
-        $folder->registerTaskDefinition($this->name, $task, TASK_CREATE_OR_UPDATE, 'SYSTEM', null, TASK_LOGON_PASSWORD);
+        $folder->registerTaskDefinition($task->getName(), $task->getResource(), $flags, 'SYSTEM', null, Task::LOGON_PASSWORD);
     }
 }

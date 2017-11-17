@@ -2,6 +2,8 @@
 
 namespace Stevebauman\WinSchedule;
 
+use Stevebauman\WinSchedule\Triggers\Factory as TriggerFactory;
+
 class Task
 {
     const LOGON_NONE = 0;
@@ -12,15 +14,30 @@ class Task
     const LOGON_SERVICE_ACCOUNT = 5;
     const LOGON_INTERACTIVE_TOKEN_OR_PASSWORD = 6;
 
+    const FLAG_VALIDATE_ONLY = 1;
+    const FLAG_CREATE = 2;
+    const FLAG_UPDATE = 4;
+    const FLAG_CREATE_OR_UPDATE = 6;
+    const FLAG_DISABLE = 8;
+    const FLAG_DONT_ADD_PRINCIPAL_ACE = 10;
+    const FLAG_IGNORE_REGISTRATION_TRIGGERS = 20;
+
+    /**
+     * The task name.
+     *
+     * @var string
+     */
+    protected $name = '';
+
     /**
      * The underlying task COM object.
      *
      * @var \Variant
      */
-    protected $object;
+    protected $resource;
 
     /**
-     * The task settings.
+     * The task settings instance.
      *
      * @var Settings
      */
@@ -34,17 +51,72 @@ class Task
     protected $folder = '//';
 
     /**
+     * The task creation flags.
+     *
+     * @var int
+     */
+    protected $flags = Task::FLAG_CREATE_OR_UPDATE;
+
+    /**
      * Constructor.
      *
-     * @param \Variant $task
+     * @param \Variant $resource
      */
-    public function __construct($task)
+    public function __construct($resource)
     {
-        $this->object = $task;
+        $this->resource = $resource;
 
-        $this->settings = new Settings($this->object->TaskSettings);
+        $this->settings = new Settings($resource->Settings);
 
         $this->setDefaults();
+    }
+
+    /**
+     * Sets the resource variant object.
+     *
+     * @param \VARIANT $resource
+     *
+     * @return $this
+     */
+    public function setResource($resource)
+    {
+        $this->resource = $resource;
+
+        return $this;
+    }
+
+    /**
+     * Returns the underlying VARIANT resource object.
+     *
+     * @return \Variant
+     */
+    public function getResource()
+    {
+        return $this->resource;
+    }
+
+    /**
+     * Sets the task creation flags.
+     *
+     * @param int $flags
+     *
+     * @return $this
+     */
+    public function setCreationFlags($flags)
+    {
+        $this->flags = $flags;
+
+        return $this;
+    }
+
+    /**
+     * Returns the task creation flags.
+     *
+     * @return int
+     */
+    public function getCreationFlags()
+    {
+        return $this->flags;
     }
 
     /**
@@ -55,6 +127,30 @@ class Task
     public function settings()
     {
         return $this->settings;
+    }
+
+    /**
+     * Sets the name of the task.
+     *
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Returns the name of the task.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -132,9 +228,19 @@ class Task
      */
     public function setLogonType($type)
     {
-        $this->object->principal->logonType = $type;
+        $this->resource->principal->logonType = $type;
 
         return $this;
+    }
+
+    /**
+     * Returns the tasks logon type.
+     *
+     * @return integer
+     */
+    public function getLogonType()
+    {
+        return $this->resource->principal->logonType;
     }
 
     /**
@@ -154,7 +260,7 @@ class Task
      *
      * @return Task
      */
-    public function setFolderPath($folder = '//')
+    public function setFolderPath($folder = '\\')
     {
         $this->folder = $folder;
 
@@ -168,7 +274,7 @@ class Task
      */
     public function setDefaults()
     {
-        return $this->setFolderPath('//');
+        return $this->setFolderPath('\\');
     }
 
     /**
@@ -180,7 +286,7 @@ class Task
      */
     protected function getInfo($key)
     {
-        return $this->object->RegistrationInfo->{$key};
+        return $this->resource->RegistrationInfo->{$key};
     }
 
     /**
@@ -193,7 +299,7 @@ class Task
      */
     protected function setInfo($key, $value)
     {
-        $this->object->RegistrationInfo->{$key} = $value;
+        $this->resource->RegistrationInfo->{$key} = $value;
 
         return $this;
     }
